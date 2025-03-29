@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Up Stream - نظام الفرق</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 120px 20px 20px;
+        background-image: url('images/background.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      span {
+        color: #07c807;
+      }
+
+      .fixed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        backdrop-filter: blur(8px);
+        border-bottom: 2px solid #3498db;
+        width: 100%;
+      }
+
+      .header-content {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-grow: 1;
+      }
+
+      .header-title {
+        color: #2c3e50;
+        font-size: 2.4rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin-bottom: 5px;
+      }
+
+      .bible-verse {
+        color: #e74c3c;
+        font-size: 1.5rem;
+        font-style: italic;
+      }
+
+      .logo {
+        height: 5rem;
+        width: 5rem;
+        object-fit: contain;
+        border-radius: 50%;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-top: 100px;
+        transition: all 0.3s;
+      }
+
+      .section-title {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+        font-size: 1.8rem;
+      }
+
+      .color-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2x2 grid */
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .color-card {
+        height: 180px;
+        border-radius: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4em;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(4px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .color-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .color-card.selected {
+        border: 3px solid #2c3e50;
+        box-shadow: 0 0 15px rgba(44, 62, 80, 0.3);
+      }
+
+      #green {
+        background-color: rgba(46, 204, 113, 0.8);
+      }
+
+      #pink {
+        background-color: rgba(255, 105, 180, 0.8);
+      }
+
+      #white {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #333;
+      }
+
+      #yellow {
+        background-color: rgba(241, 196, 15, 0.9);
+      }
+
+      button {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        padding: 16px 45px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 1.1em;
+        margin-top: 30px;
+        display: block;
+        width: 220px;
+        margin-left: auto;
+        margin-right: auto;
+        transition: all 0.3s;
+        letter-spacing: 1px;
+      }
+
+      button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+      }
+
+      .details-section {
+        display: none;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 30px;
+        margin: 20px auto;
+        max-width: 800px;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .team-header {
+        text-align: center;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        color: white;
+      }
+
+      .program-list {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .program-item {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        font-size: 1.1em;
+        transition: background 0.3s;
+      }
+
+      .program-item:hover {
+        background: #f8f9fa;
+      }
+
+      .back-btn {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+        padding: 14px 35px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        margin: 30px auto;
+        display: block;
+        transition: all 0.3s;
+      }
+
+      .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+      }
+
+      /* Media Queries for Responsiveness */
+
+      /* For Mobile Devices */
+      @media screen and (max-width: 600px) {
+        .fixed-header {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 10px;
+        }
+
+        .header-title {
+          font-size: 1.8rem;
+          text-align: center;
+        }
+
+        .bible-verse {
+          font-size: 1.2rem;
+          text-align: center;
+        }
+
+        .logo {
+          width: 4rem;
+          height: 4rem;
+        }
+
+        .color-grid {
+          grid-template-columns: 1fr; /* Stack the grid items vertically */
+        }
+
+        .color-card {
+          height: 160px;
+          font-size: 1.2rem;
+        }
+
+        .section-title {
+          font-size: 1.6rem;
+        }
+
+        button {
+          width: 180px;
+          font-size: 1em;
+        }
+      }
+
+      /* For Tablet Devices */
+      @media screen and (min-width: 601px) and (max-width: 1024px) {
+        .fixed-header {
+          flex-direction: row;
+          justify-content: space-between;
+          padding: 15px;
+        }
+
+        .header-title {
+          font-size: 2rem;
+        }
+
+        .bible-verse {
+          font-size: 1.4rem;
+        }
+
+        .color-grid {
+          grid-template-columns: repeat(2, 1fr); /* 2x2 grid */
+        }
+
+        .color-card {
+          height: 180px;
+          font-size: 1.3rem;
+        }
+
+        .section-title {
+          font-size: 1.7rem;
+        }
+
+        button {
+          width: 200px;
+        }
+      }
+
+      /* For Desktop Devices */
+      @media screen and (min-width: 1025px) {
+        .color-card {
+          height: 180px;
+          font-size: 1.4rem;
+        }
+
+        .section-title {
+          font-size: 1.8rem;
+        }
+
+        button {
+          width: 220px;
+          font-size: 1.1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="fixed-header">
+      <div class="header-content">
+        <h1 class="header-title"><span>UP</span>STREAM</h1>
+        <p class="bible-verse">
+          "كونوا راسخين، غير متزعزعين، مكثرين في عمل الرب كل حين." (1 كورنثوس
+          15:58)
+        </p>
+      </div>
+      <img
+        src="D:\logo\WhatsApp Image 2021-09-15 at 5.35.21 PM.jpeg"
+        alt="Logo"
+        class="logo"
+      />
+    </header>
+
+    <div class="container" id="mainContainer">
+      <h1 class="section-title">اختر فريقك</h1>
+      <div class="color-grid">
+        <div class="color-card" id="green" onclick="selectColor('green')">
+          الفريق الأخضر
+          <input type="radio" name="team" value="green" hidden />
+        </div>
+        <div class="color-card" id="pink" onclick="selectColor('pink')">
+          الفريق البمبي
+          <input type="radio" name="team" value="pink" hidden />
+        </div>
+        <div class="color-card" id="white" onclick="selectColor('white')">
+          الفريق الأبيض
+          <input type="radio" name="team" value="white" hidden />
+        </div>
+        <div class="color-card" id="yellow" onclick="selectColor('yellow')">
+          الفريق الأصفر
+          <input type="radio" name="team" value="yellow" hidden />
+        </div>
+      </div>
+      <!-- <button onclick="showTeamDetails()">عرض التفاصيل</button> -->
+    </div>
+
+    <div class="details-section" id="detailsSection"></div>
+
+    <script>
+      const programs = {
+        green: {
+          title: 'الفريق الأخضر',
+          items: [
+            '1 احكي يا تاريخ',
+            '2 (العاب 1 )',
+            '3 العقل',
+            '4 break',
+            '5 الإستقامه',
+            '6 ( الألعاب 2 )',
+            '7 خلطبيته',
+            '8 ختام'
+          ],
+          color: '#2ecc71'
+        },
+        pink: {
+          title: 'الفريق البمبي',
+          items: [
+            '1 العقل',
+            '2 ( الألعاب 1)',
+            '3 احكي يا تاريخ',
+            '4 break',
+            '5 خلطبيته',
+            '6 ( الألعاب 2)',
+            '7 الإستقامه',
+            '8 الختام'
+          ],
+          color: '#ff69b4'
+        },
+        white: {
+          title: 'الفريق الأبيض',
+          items: [
+            '1 خلطبيته',
+            '2 ( الألعاب 2 )',
+            '3 الإستقامه',
+            '4 break',
+            '5 احكي يا تاريخ',
+            '6 ( الألعاب 1 )',
+            '7 العقل',
+            '8 الختام'
+          ],
+          color: '#95a5a6'
+        },
+        yellow: {
+          title: 'الفريق الأصفر',
+          items: [
+            '1 الإستقامه',
+            '2 ( الألعاب 2)',
+            '3 خلطبيته',
+            '4 break',
+            '5 العقل',
+            '6 ( الألعاب 1 )',
+            '7 احكي يا تاريخ',
+            '8 الختام'
+          ],
+          color: '#f1c40f'
+        }
+      };
+
+      let selectedColor = null;
+
+      function selectColor(color) {
+        selectedColor = color;
+        document.querySelectorAll('.color-card').forEach((card) => {
+          card.classList.remove('selected');
+        });
+        document.getElementById(color).classList.add('selected');
+        showTeamDetails();
+      }
+
+      function showTeamDetails() {
+        if (!selectedColor) {
+          alert('الرجاء اختيار فريق أولاً');
+          return;
+        }
+
+        const team = programs[selectedColor];
+        const detailsContent = `
+              <div class="team-header" style="background: ${team.color}">
+                <h1>${team.title}</h1>
+              </div>
+              <div class="program-list">
+                ${team.items
+                  .map(
+                    (item) => `
+                    <div class="program-item">${item}</div>
+                  `
+                  )
+                  .join('')}
+              </div>
+              <button class="back-btn" onclick="showMainPage()">العودة</button>
+            `;
+
+        document.getElementById('detailsSection').innerHTML = detailsContent;
+        document.getElementById('mainContainer').style.display = 'none';
+        document.getElementById('detailsSection').style.display = 'block';
+      }
+
+      function showMainPage() {
+        document.getElementById('mainContainer').style.display = 'block';
+        document.getElementById('detailsSection').style.display = 'none';
+        selectedColor = null;
+        document.querySelectorAll('.color-card').forEach((card) => {
+          card.classList.remove('selected');
+        });
+      }
+    </script>
+  </body>
+</html>
